@@ -113,6 +113,33 @@ namespace ConsoleBankingApp
         // View transaction history
         public static void ViewTransactions(User user)
         {
-            if (user.Accounts.Count == 0)
+                       if (user.Accounts.Count == 0)
             {
-                Console.WriteLine("N
+                Console.WriteLine("No accounts found. Create one first.");
+                return;
+            }
+
+            ViewAccounts(user);
+            Console.Write("Select account number to view transactions: ");
+            int index = int.Parse(Console.ReadLine()) - 1;
+
+            if (index < 0 || index >= user.Accounts.Count)
+            {
+                Console.WriteLine("Invalid account selection.");
+                return;
+            }
+
+            Console.WriteLine($"\n--- Transactions for {user.Accounts[index].AccountType} ---");
+            if (user.Accounts[index].Transactions.Count == 0)
+            {
+                Console.WriteLine("No transactions yet.");
+                return;
+            }
+
+            foreach (var t in user.Accounts[index].Transactions)
+            {
+                Console.WriteLine($"{t.Date}: {t.Type} - {t.Amount} USD - {t.Note}");
+            }
+        }
+    }
+}
